@@ -12,7 +12,7 @@ from scrapy.utils.response import get_meta_refresh
 import os
 
 
-QUATERLY_REPORTS = False
+QUATERLY_REPORTS = True
 
 CUSTOM_SETTINGS = dict(
     TWISTED_REACTOR="twisted.internet.asyncioreactor.AsyncioSelectorReactor",
@@ -23,32 +23,25 @@ CUSTOM_SETTINGS = dict(
     COOKIES_ENABLED=True,
     CONCURRENT_REQUESTS=4,
     CONCURRENT_REQUESTS_PER_DOMAIN=4,
-    ROBOTSTXT_OBEY=False,
-    # LOG_STDOUT = True,
-    # LOG_FILE = './logs/scrapy_output.txt'
+    ROBOTSTXT_OBEY=False
 )
 
 
-TICKERS = list(pd.read_csv("./sp500/constituents.csv")
-               [['Symbol', 'Security']].itertuples(index=False, name=None))
+TICKERS = list(
+    pd.read_csv("./sp500/constituents.csv")[['Symbol', 'Security']].itertuples(index=False, name=None)
+)
 
 
 def etl(response):
-
-    # regex to find the data
     response_text = response.text
     num = re.findall('(?<=div\>\"\,)[0-9\.\"\:\-\, ]*', response_text)
     text = re.findall('(?<=s\: \')\S+(?=\'\, freq)', response_text)
-
-    # convert text to dict via json
     dicts = [json.loads('{'+i+'}') for i in num]
-    # create dataframe
     df = pd.DataFrame()
     for ind, val in enumerate(text):
         val = val.replace('-', '_')
         df[val] = dicts[ind].values()
     df.index = dicts[ind].keys()
-
     return df
 
 
@@ -56,7 +49,7 @@ class Spider(scrapy.Spider):
     name = "sp500"
     start_urls = []
     custom_settings = CUSTOM_SETTINGS
-    # handle_httpstatus_list = [301]
+    handle_httpstatus_list = [301]
 
     subsites = [
         "income-statement",

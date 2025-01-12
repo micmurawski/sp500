@@ -1,0 +1,17 @@
+ipykernel
+ipython
+ipython-genutils
+kaggle
+kagglehub
+nbformat
+notebook
+numpy
+pandas
+pandas-datareader
+scikit-learn
+scipy
+Scrapy
+seaborn
+yfinance
+xgboost
+matplotlib
