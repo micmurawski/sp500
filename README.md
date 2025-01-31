@@ -58,3 +58,35 @@ Dodatkowo rozważam zastosowanie analizy szeregów czasowych mając dane kwartal
 
 ## Repozytorium GH
 [https://github.com/micmurawski/sp500](https://github.com/micmurawski/sp500)
+
+
+
+# Stuktura repozytorium
+
+```
+├── README.md 
+├── credit_data - dane kredytowe
+├── feature_selection-final.ipynb - selekcja cech
+├── michal-murawski-prezentacja.slides.html - prezentacja
+├── modeling-final.ipynb - modelowanie
+├── requirements.txt - zależności
+├── scrape.py - skraper
+├── sp500 - dane spółek
+└── utils.py - kod pomocniczy
+```
+## Instalacja zależności
+```
+python3 -m pip install -r requirements.txt 
+```
+## Uruchomienie skrapera
+```
+python3 -m scrapy runspider scrape.py 
+```
+## Dane
+
+* [macrotredns.com](https://macrotredns.com)
+* [S&P500](https://github.com/datasets/s-and-p-500-companies/blob/main/data/constituents.csv)
+* [yahoo finance](http://finance.yahoo.com)
+* [yfinance](https://pypi.org/project/yfinance/)
+* [bls.gov](https://www.bls.gov/charts/consumer-price-index/consumer-price-index-by-category-line-chart.htm) 
+
