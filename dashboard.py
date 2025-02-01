@@ -38,17 +38,17 @@ base_attrs = [
     'operating_income',
     'cash_flow_from_operating_activities',
     'ebitda',
-    #'inventory_turnover',
+    # 'inventory_turnover',
     'debt_equity_ratio',
     'net_income',
     'current_ratio',
     'long_term_debt_capital',
-    #'receiveable_turnover',
+    # 'receiveable_turnover',
     'retained_earnings_accumulated_deficit',
     'roi',
     'ebit_margin',
     'book_value_per_share',
-    #'days_sales_in_receivables',
+    # 'days_sales_in_receivables',
     'pre_tax_profit_margin',
     'total_current_assets',
     'cash_on_hand',
@@ -60,33 +60,48 @@ base_attrs = [
 MODELPATH = 'models/RandomForestClassifier-class_1_q1-0674-2025-01-31-17-44-24/model.pkl'
 PARAMETERS_PATH = 'models/RandomForestClassifier-class_1_q1-0674-2025-01-31-17-44-24/parameters.json'
 
+
+def quarter_int_to_date(n):
+    year = 2009 + n // 4
+    quarter = (n % 4) + 1
+    return f"{year}Q{quarter}"
+
+
 # Page config
 st.set_page_config(page_title="Stock Analysis Dashboard", layout="wide")
 st.title("Stock Analysis Dashboard")
 
 # Load data and model
+
+
 @st.cache_data
 def load_data():
-    XY = pd.read_csv("sp500/data_xy.csv").set_index(keys=["quarter", "ticker"], drop=True)
-    CREDIT_DATA = pd.read_csv('credit_data/credit_data.csv').set_index(keys='quarter', drop=True)
+    XY = pd.read_csv(
+        "sp500/data_xy.csv").set_index(keys=["quarter", "ticker"], drop=True)
+    CREDIT_DATA = pd.read_csv(
+        'credit_data/credit_data.csv').set_index(keys='quarter', drop=True)
     XY = XY.join(CREDIT_DATA, on='quarter', how='left')
     XY = pd.get_dummies(XY, columns=["sector"])
     return XY
+
 
 @st.cache_resource
 def load_model():
     with open(MODELPATH, 'rb') as file:
         return pickle.load(file)
-    
+
+
 @st.cache_resource
 def load_parameters():
     with open(PARAMETERS_PATH) as file:
         return json.load(file)["parameters"]
 
+
 df = load_data()
 model = load_model()
 
 attrs = list(set(df.columns) - set(decision_attrs))
+
 
 def prepare_features(company_data):
     if company_data.empty:
@@ -96,11 +111,12 @@ def prepare_features(company_data):
     features = latest_data[parameters].values.reshape(1, -1)
     return features
 
+
 def make_prediction(company_data):
     features = prepare_features(company_data)
     if features is None:
         return None, None
-    
+
     try:
         pred_class = model.predict(features)[0]
         confidence = model.predict_proba(features)[0][int(pred_class)]
@@ -109,6 +125,7 @@ def make_prediction(company_data):
     except Exception as e:
         st.error(f"Prediction error: {e}")
         return None, None
+
 
 # Sidebar
 st.sidebar.header("Controls")
@@ -131,20 +148,22 @@ with col1:
     st.subheader("ML Model Prediction")
     if prediction:
         if prediction == 'BUY':
-            st.success(f"Prediction: {prediction} (Confidence: {confidence:.2%})")
+            st.success(f"Prediction: {
+                       prediction} (Confidence: {confidence:.2%})")
         else:
-            st.error(f"Prediction: {prediction} (Confidence: {confidence:.2%})")
+            st.error(f"Prediction: {
+                     prediction} (Confidence: {confidence:.2%})")
 
 # Feature importance
-if hasattr(model, 'feature_importances_'):
-    with col2:
-        st.subheader("Feature Importance")
-        feature_cols = ['pe_ratio', 'debt_to_equity', 'current_ratio']
-        importance_df = pd.DataFrame({
-            'Feature': feature_cols,
-            'Importance': model.feature_importances_
-        }).sort_values('Importance', ascending=False)
-        st.dataframe(importance_df)
+
+with col2:
+    st.subheader("Feature Importance")
+    feature_cols = load_parameters()
+    importance_df = pd.DataFrame({
+        'Feature': feature_cols,
+        'Importance': model.named_steps['clf'].feature_importances_
+    }).sort_values('Importance', ascending=False)
+    st.dataframe(importance_df)
 
 # Create main plot
 fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -152,7 +171,7 @@ fig = make_subplots(specs=[[{"secondary_y": True}]])
 # Add price line
 fig.add_trace(
     go.Scatter(
-        x=company_data.reset_index()['quarter'],
+        x=company_data.reset_index()['quarter'].apply(quarter_int_to_date),
         y=company_data['price'],
         name="Price",
         line=dict(color="#1f77b4", width=2)
@@ -175,7 +194,8 @@ for ratio in base_attrs:
         )
 
 # Update layout
-prediction_text = f"{prediction} (Confidence: {confidence:.2%})" if prediction else "No prediction"
+prediction_text = f"{prediction} (Confidence: {
+    confidence:.2%})" if prediction else "No prediction"
 fig.update_layout(
     title=f"{selected_company} Stock Analysis",
     xaxis_title="Quarter",
