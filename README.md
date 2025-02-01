@@ -82,6 +82,12 @@ python3 -m pip install -r requirements.txt
 ```
 python3 -m scrapy runspider scrape.py 
 ```
+
+## Uruchomienie dashboardu
+```
+streamlit run dashboard.py
+```
+
 ## Dane
 
 * [macrotredns.com](https://macrotredns.com)
@@ -90,3 +96,4 @@ python3 -m scrapy runspider scrape.py
 * [yfinance](https://pypi.org/project/yfinance/)
 * [bls.gov](https://www.bls.gov/charts/consumer-price-index/consumer-price-index-by-category-line-chart.htm) 
 
+ 
