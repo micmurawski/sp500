@@ -5,7 +5,7 @@
 <meta content="chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
-<title>ewd_prezentajca_copy slides</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script type="module">
+<title>prezentacja slides</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script type="module">
   import mermaid from 'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true });
 </script>
@@ -8154,6 +8154,389 @@ $</p>
 <li><p>różnice pomiędzy zwrotami, a zwrotami z S&amp;P500 do badania korelacji</p>
 </li>
 </ul>
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Oczyszczanie-danych">Oczyszczanie danych<a class="anchor-link" href="#Oczyszczanie-danych">¶</a></h3><ul>
+<li><p>Usunięto kolumny który miały najwięszy udział w wartościach <code>NaN</code></p>
+</li>
+<li><p>Pewne kolumny zostały ponieważ mogą mieć potencjalny duży wpływ na znajdowanie
+użytecznych korelacji</p>
+</li>
+<li><p><strong>finalnie dataset miał 223 kolumn i 29460 wierszy</strong></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'sp500/data_xy.csv'</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'quarter'</span><span class="p">,</span> <span class="s1">'ticker'</span><span class="p">],</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>price</th>
+<th>log_return_q1</th>
+<th>log_return_q2</th>
+<th>log_return_q3</th>
+<th>log_return_q4</th>
+<th>class_1_q1</th>
+<th>class_1_q2</th>
+<th>class_1_q3</th>
+<th>class_1_q4</th>
+<th>class_2_q1</th>
+<th>...</th>
+<th>operating_income_percentile_in_index</th>
+<th>operating_income_percentile_in_sector</th>
+<th>fcf_growth_YoY_signal_percentile_in_index</th>
+<th>fcf_growth_YoY_signal_percentile_in_sector</th>
+<th>cash_flow_from_financial_activities_percentile_in_index</th>
+<th>cash_flow_from_financial_activities_percentile_in_sector</th>
+<th>basic_shares_outstanding_percentile_in_index</th>
+<th>basic_shares_outstanding_percentile_in_sector</th>
+<th>total_depreciation_amortization_cash_flow_percentile_in_index</th>
+<th>total_depreciation_amortization_cash_flow_percentile_in_sector</th>
+</tr>
+<tr>
+<th>quarter</th>
+<th>ticker</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th rowspan="5" valign="top">0</th>
+<th>AAPL</th>
+<td>3.494393</td>
+<td>0.188281</td>
+<td>0.466312</td>
+<td>0.597074</td>
+<td>0.710201</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.958564</td>
+<td>0.947368</td>
+<td>0.682320</td>
+<td>0.789474</td>
+<td>0.837017</td>
+<td>0.947368</td>
+<td>1.000000</td>
+<td>1.000000</td>
+<td>0.831492</td>
+<td>0.789474</td>
+</tr>
+<tr>
+<th>ABT</th>
+<td>14.733612</td>
+<td>0.056923</td>
+<td>0.139879</td>
+<td>0.227892</td>
+<td>0.215906</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.908840</td>
+<td>0.843137</td>
+<td>0.682320</td>
+<td>0.745098</td>
+<td>0.969613</td>
+<td>0.980392</td>
+<td>0.911602</td>
+<td>0.901961</td>
+<td>0.883978</td>
+<td>0.941176</td>
+</tr>
+<tr>
+<th>ACGL</th>
+<td>6.029753</td>
+<td>0.018919</td>
+<td>0.161160</td>
+<td>0.226118</td>
+<td>0.281442</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.552486</td>
+<td>0.440678</td>
+<td>0.682320</td>
+<td>0.627119</td>
+<td>0.290055</td>
+<td>0.457627</td>
+<td>0.729282</td>
+<td>0.627119</td>
+<td>0.024862</td>
+<td>0.050847</td>
+</tr>
+<tr>
+<th>ADM</th>
+<td>19.210802</td>
+<td>-0.079557</td>
+<td>-0.005576</td>
+<td>0.095311</td>
+<td>0.027506</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.687845</td>
+<td>0.500000</td>
+<td>0.682320</td>
+<td>0.450000</td>
+<td>0.052486</td>
+<td>0.100000</td>
+<td>0.776243</td>
+<td>0.600000</td>
+<td>0.903315</td>
+<td>0.950000</td>
+</tr>
+<tr>
+<th>ADP</th>
+<td>21.960709</td>
+<td>-0.061665</td>
+<td>0.073410</td>
+<td>0.180187</td>
+<td>0.219270</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.828729</td>
+<td>0.818182</td>
+<td>0.852210</td>
+<td>0.581818</td>
+<td>0.994475</td>
+<td>1.000000</td>
+<td>0.701657</td>
+<td>0.727273</td>
+<td>0.792818</td>
+<td>0.836364</td>
+</tr>
+<tr>
+<th>...</th>
+<th>...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<th rowspan="5" valign="top">61</th>
+<th>XYL</th>
+<td>134.892838</td>
+<td>-0.013400</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.249480</td>
+<td>0.226667</td>
+<td>0.818087</td>
+<td>0.613333</td>
+<td>0.482328</td>
+<td>0.440000</td>
+<td>0.395010</td>
+<td>0.546667</td>
+<td>0.434511</td>
+<td>0.573333</td>
+</tr>
+<tr>
+<th>YUM</th>
+<td>131.166779</td>
+<td>0.035534</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.559252</td>
+<td>0.612245</td>
+<td>0.288981</td>
+<td>0.020408</td>
+<td>0.523909</td>
+<td>0.571429</td>
+<td>0.452183</td>
+<td>0.571429</td>
+<td>0.143451</td>
+<td>0.183673</td>
+</tr>
+<tr>
+<th>ZBH</th>
+<td>107.806511</td>
+<td>-0.033898</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.347193</td>
+<td>0.389831</td>
+<td>0.288981</td>
+<td>0.016949</td>
+<td>0.742204</td>
+<td>0.694915</td>
+<td>0.318087</td>
+<td>0.457627</td>
+<td>0.596674</td>
+<td>0.576271</td>
+</tr>
+<tr>
+<th>ZBRA</th>
+<td>308.929993</td>
+<td>0.171484</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.128898</td>
+<td>0.212121</td>
+<td>0.818087</td>
+<td>0.636364</td>
+<td>0.835759</td>
+<td>0.893939</td>
+<td>0.039501</td>
+<td>0.075758</td>
+<td>0.150728</td>
+<td>0.227273</td>
+</tr>
+<tr>
+<th>ZTS</th>
+<td>172.019730</td>
+<td>0.094187</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.625780</td>
+<td>0.627119</td>
+<td>0.606029</td>
+<td>0.593220</td>
+<td>0.278586</td>
+<td>0.338983</td>
+<td>0.620582</td>
+<td>0.711864</td>
+<td>0.397089</td>
+<td>0.440678</td>
+</tr>
+</tbody>
+</table>
+<p>29460 rows × 223 columns</p>
+</div>
+</div>
 </div>
 </div>
 </div>
