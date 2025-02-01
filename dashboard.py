@@ -99,7 +99,6 @@ def load_parameters():
 
 df = load_data()
 model = load_model()
-
 attrs = list(set(df.columns) - set(decision_attrs))
 
 
@@ -148,11 +147,9 @@ with col1:
     st.subheader("ML Model Prediction")
     if prediction:
         if prediction == 'BUY':
-            st.success(f"Prediction: {
-                       prediction} (Confidence: {confidence:.2%})")
+            st.success(f"Prediction: {prediction} (Confidence: {confidence:.2%})")
         else:
-            st.error(f"Prediction: {
-                     prediction} (Confidence: {confidence:.2%})")
+            st.error(f"Prediction: {prediction} (Confidence: {confidence:.2%})")
 
 # Feature importance
 
@@ -194,8 +191,7 @@ for ratio in base_attrs:
         )
 
 # Update layout
-prediction_text = f"{prediction} (Confidence: {
-    confidence:.2%})" if prediction else "No prediction"
+prediction_text = f"{prediction} (Confidence: {confidence:.2%})" if prediction else "No prediction"
 fig.update_layout(
     title=f"{selected_company} Stock Analysis",
     xaxis_title="Quarter",
@@ -212,18 +208,17 @@ st.plotly_chart(fig, use_container_width=True)
 # Display metrics
 st.subheader("Latest Financial Metrics")
 
-n = 5
+N = 5
 if not company_data.empty:
     latest_data = company_data.iloc[-1]
-
-    for metrics_col, attr_name in zip(st.columns(n), base_attrs[:n]):
+    for metrics_col, attr_name in zip(st.columns(N), base_attrs[:N]):
         with metrics_col:
             st.metric(attr_name, f"{latest_data[attr_name]:.2f}")
 
 # Model details
 with st.expander("Model Details"):
     if not company_data.empty:
-        for attr_name in base_attrs[n:]:
+        for attr_name in base_attrs[N:]:
             st.write(attr_name, f"{latest_data[attr_name]:.2f}")
 
 # Optional: Display raw data
