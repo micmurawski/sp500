@@ -1,14 +1,11 @@
-import requests
 import scrapy
-import urllib.parse
 
 import scrapy
 import pandas as pd
 from collections.abc import Iterable
-from scrapy.http import Request, Response
+from scrapy.http import Request
 import re
 import json
-from scrapy.utils.response import get_meta_refresh
 import os
 
 
