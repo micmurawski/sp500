@@ -181,7 +181,7 @@ for ratio in base_attrs:
     if ratio in company_data.columns:
         fig.add_trace(
             go.Scatter(
-                x=company_data.reset_index()['quarter'],
+                x=company_data.reset_index()['quarter'].apply(quarter_int_to_date),
                 y=company_data[ratio],
                 name=ratio.replace('_', ' ').title(),
                 line=dict(dash='dash'),
